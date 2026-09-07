@@ -1,0 +1,65 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>URL Shortener QR Code</title>
+</head>
+<body>
+
+  <h1>URL Shortener</h1>
+
+  <input
+    type="text"
+    id="originalUrl"
+    placeholder="Enter original URL"
+    size="50"
+  >
+
+  <button onclick="createShortUrl()">Create Short URL</button>
+
+  <h2 id="shortUrl"></h2>
+
+  <img id="qr" alt="QR Code">
+
+  <script>
+    async function createShortUrl() {
+      const originalUrl = document.getElementById('originalUrl').value;
+
+      if (!originalUrl) {
+        alert('Please enter a URL');
+        return;
+      }
+
+      const response = await fetch('/api/urls', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          originalUrl: originalUrl
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error);
+        return;
+      }
+
+      document.getElementById('shortUrl').textContent =
+        'Short URL: ' + data.shortUrl;
+
+      const qrResponse = await fetch(
+        '/api/urls/' + data.shortCode + '/qr'
+      );
+
+      const qrData = await qrResponse.json();
+
+      document.getElementById('qr').src = qrData.qrCode;
+    }
+  </script>
+
+</body>
+</html>
+```
