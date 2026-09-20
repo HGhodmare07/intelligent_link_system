@@ -1,5 +1,6 @@
 const qrService = require('../services/qr.service');
 const urlService = require('../services/url.service');
+const analyticsService = require('../services/analytics.service');
 
 function isValidUrl(value) {
   try {
@@ -41,7 +42,11 @@ async function redirectToOriginal(req, res, next) {
   try {
     const { code } = req.params;
 
-    const record = await urlService.resolveShortCode(code);
+    const record = await urlService.resolveShortCode(code, {
+      ipAddress: req.ip,
+      userAgent: req.get('user-agent'),
+      referrer: req.get('referer')
+    });
 
     if (!record) {
       return res.status(404).json({
@@ -54,17 +59,22 @@ async function redirectToOriginal(req, res, next) {
     next(err);
   }
 }
+
 async function generateQr(req, res, next) {
   try {
     const { code } = req.params;
 
-    const record = await urlService.resolveShortCode(code);
+    const record = await urlService.getShortUrl(code);
 
     if (!record) {
-      return res.status(404).json({ error: 'Short URL not found.' });
+      return res.status(404).json({
+        error: 'Short URL not found.'
+      });
     }
 
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const baseUrl =
+      process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+
     const shortUrl = `${baseUrl}/${record.short_code}`;
 
     const qrCode = await qrService.generateQrCode(shortUrl);
@@ -77,9 +87,30 @@ async function generateQr(req, res, next) {
     next(err);
   }
 }
+async function getAnalytics(req, res, next) {
+  try {
+    const { code } = req.params;
+
+    const analytics =
+      await analyticsService.getUrlAnalytics(code);
+
+    if (!analytics) {
+      return res.status(404).json({
+        error: 'Short URL not found.'
+      });
+    }
+
+    return res.json(analytics);
+
+  } catch (err) {
+    next(err);
+  }
+}
 
 module.exports = {
   createShortUrl,
   redirectToOriginal,
-  generateQr
+  generateQr,
+   getAnalytics
+   
 };
