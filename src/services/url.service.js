@@ -1,10 +1,10 @@
 const base62 = require('./base62.service');
 const urlModel = require('../models/url.model');
 const cacheService = require('./cache.service');
+const routingService = require('./routing.service');
 const UAParser = require('ua-parser-js');
 
 async function shortenUrl(originalUrl) {
-
   const { id } = await urlModel.insertUrl(originalUrl);
 
   const shortCode = base62.encode(Number(id));
@@ -15,14 +15,13 @@ async function shortenUrl(originalUrl) {
 }
 
 async function resolveShortCode(shortCode, requestInfo = {}) {
-
   const {
     ipAddress = null,
     userAgent = null,
     referrer = null
   } = requestInfo;
 
-  // Parse browser, OS and device information
+  // Detect device
   const parser = new UAParser(userAgent || '');
   const userAgentResult = parser.getResult();
 
@@ -41,21 +40,24 @@ async function resolveShortCode(shortCode, requestInfo = {}) {
   const device =
     userAgentResult.device.type || 'Desktop';
 
-  // 1. Check Redis first
+  // Check Redis
   const cachedUrl = await cacheService.getUrl(shortCode);
+   
+  console.log('Detected device:', device);
+  
+  let row;
 
   if (cachedUrl) {
-
     console.log(`Redis HIT: ${shortCode}`);
 
-    const row = await urlModel.findByShortCode(shortCode);
+    row = await urlModel.findByShortCode(shortCode);
 
-    if (!row) return null;
+    if (!row) {
+      return null;
+    }
 
-    // Increment click count
     await urlModel.incrementClicks(row.id);
 
-    // Store click event with analytics data
     await urlModel.insertClickEvent(
       row.id,
       ipAddress,
@@ -68,29 +70,34 @@ async function resolveShortCode(shortCode, requestInfo = {}) {
       device
     );
 
+    // Intelligent routing
+    const routedUrl = await routingService.resolveRoute(
+      row.id,
+      device
+    );
+
     return {
       ...row,
-      original_url: cachedUrl
+      original_url: routedUrl || cachedUrl
     };
   }
 
-  // 2. Redis MISS → check PostgreSQL
   console.log(`Redis MISS: ${shortCode}`);
 
-  const row = await urlModel.findByShortCode(shortCode);
+  row = await urlModel.findByShortCode(shortCode);
 
-  if (!row) return null;
+  if (!row) {
+    return null;
+  }
 
-  // 3. Store the URL in Redis
+  // Store original URL in Redis
   await cacheService.setUrl(
     shortCode,
     row.original_url
   );
 
-  // 4. Increment click count
   await urlModel.incrementClicks(row.id);
 
-  // 5. Store click event with analytics data
   await urlModel.insertClickEvent(
     row.id,
     ipAddress,
@@ -103,10 +110,19 @@ async function resolveShortCode(shortCode, requestInfo = {}) {
     device
   );
 
-  return row;
+  // Intelligent routing
+  const routedUrl = await routingService.resolveRoute(
+    row.id,
+    device
+  );
+
+  return {
+    ...row,
+    original_url: routedUrl || row.original_url
+  };
 }
+
 async function getShortUrl(shortCode) {
-  // 1. Check Redis first
   const cachedUrl = await cacheService.getUrl(shortCode);
 
   if (cachedUrl) {
@@ -124,7 +140,6 @@ async function getShortUrl(shortCode) {
     };
   }
 
-  // 2. Redis MISS → PostgreSQL
   console.log(`Redis MISS: ${shortCode}`);
 
   const row = await urlModel.findByShortCode(shortCode);
@@ -133,7 +148,6 @@ async function getShortUrl(shortCode) {
     return null;
   }
 
-  // 3. Cache the URL
   await cacheService.setUrl(
     shortCode,
     row.original_url

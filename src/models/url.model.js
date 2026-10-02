@@ -252,6 +252,68 @@ async function getHourlyClicks(urlId) {
   return result.rows;
 }
 
+// ==============================
+// INTELLIGENT ROUTING
+// ==============================
+
+async function addRoute(urlId, routeType, destinationUrl) {
+  const result = await pool.query(
+    `INSERT INTO url_routes
+     (url_id, route_type, destination_url)
+     VALUES ($1, $2, $3)
+     ON CONFLICT (url_id, route_type)
+     DO UPDATE SET destination_url = EXCLUDED.destination_url
+     RETURNING *`,
+    [urlId, routeType, destinationUrl]
+  );
+
+  return result.rows[0];
+}
+
+async function getRoutes(urlId) {
+  const result = await pool.query(
+    `SELECT
+       id,
+       url_id,
+       route_type,
+       destination_url,
+       created_at
+     FROM url_routes
+     WHERE url_id = $1
+     ORDER BY route_type`,
+    [urlId]
+  );
+
+  return result.rows;
+}
+
+async function getRoute(urlId, routeType) {
+  const result = await pool.query(
+    `SELECT
+       id,
+       url_id,
+       route_type,
+       destination_url,
+       created_at
+     FROM url_routes
+     WHERE url_id = $1
+       AND route_type = $2`,
+    [urlId, routeType]
+  );
+
+  return result.rows[0] || null;
+}
+async function findById(id) {
+  const result = await pool.query(
+    `SELECT *
+     FROM urls
+     WHERE id = $1`,
+    [id]
+  );
+
+  return result.rows[0] || null;
+}
+
 
 // ==============================
 // EXPORTS
@@ -261,6 +323,7 @@ module.exports = {
   insertUrl,
   setShortCode,
   findByShortCode,
+  findById,
   incrementClicks,
   insertClickEvent,
   getAnalytics,
@@ -270,5 +333,8 @@ module.exports = {
   getReferrerStats,
   getRecentClicks,
   getDailyClicks,
-  getHourlyClicks
+  getHourlyClicks,
+  addRoute,
+  getRoutes,
+  getRoute
 };

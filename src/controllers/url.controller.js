@@ -1,6 +1,7 @@
 const qrService = require('../services/qr.service');
 const urlService = require('../services/url.service');
 const analyticsService = require('../services/analytics.service');
+const mlService = require('../services/ml.service');
 
 function isValidUrl(value) {
   try {
@@ -15,12 +16,25 @@ async function createShortUrl(req, res, next) {
   try {
     const { originalUrl } = req.body;
 
+    // Step 1: Basic URL validation
     if (!originalUrl || !isValidUrl(originalUrl)) {
       return res.status(400).json({
         error: 'A valid "originalUrl" is required.'
       });
     }
 
+    // Step 2: AI/ML security validation
+    const securityResult = await mlService.checkUrl(originalUrl);
+
+    // Step 3: Block malicious/suspicious URLs
+    if (securityResult.decision === 'BLOCK') {
+      return res.status(403).json({
+        error: 'URL blocked by security validation.',
+        security: securityResult
+      });
+    }
+
+    // Step 4: Only safe URLs reach the URL shortener
     const record = await urlService.shortenUrl(originalUrl);
 
     const baseUrl =
@@ -31,7 +45,12 @@ async function createShortUrl(req, res, next) {
       originalUrl: record.original_url,
       shortCode: record.short_code,
       shortUrl: `${baseUrl}/${record.short_code}`,
-      createdAt: record.created_at
+      createdAt: record.created_at,
+      security: {
+        decision: securityResult.decision,
+        p_malicious: securityResult.p_malicious,
+        most_likely_class: securityResult.most_likely_class
+      }
     });
   } catch (err) {
     next(err);
@@ -87,6 +106,7 @@ async function generateQr(req, res, next) {
     next(err);
   }
 }
+
 async function getAnalytics(req, res, next) {
   try {
     const { code } = req.params;
@@ -101,7 +121,6 @@ async function getAnalytics(req, res, next) {
     }
 
     return res.json(analytics);
-
   } catch (err) {
     next(err);
   }
@@ -111,6 +130,5 @@ module.exports = {
   createShortUrl,
   redirectToOriginal,
   generateQr,
-   getAnalytics
-   
+  getAnalytics
 };

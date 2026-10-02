@@ -1,5 +1,6 @@
 const express = require('express');
 const urlController = require('../controllers/url.controller');
+const routingController = require('../controllers/routing.controller');
 
 const {
   createLinkLimiter,
@@ -8,7 +9,6 @@ const {
 
 const router = express.Router();
 
-
 // Create short URL
 router.post(
   '/api/urls',
@@ -16,13 +16,22 @@ router.post(
   urlController.createShortUrl
 );
 
+// Intelligent routing
+router.post(
+  '/api/urls/:code/routes',
+  routingController.addRoute
+);
 
-// Generate QR code
+router.get(
+  '/api/urls/:code/routes',
+  routingController.getRoutes
+);
+
+// QR code
 router.get(
   '/api/urls/:code/qr',
   urlController.generateQr
 );
-
 
 // Analytics
 router.get(
@@ -30,13 +39,11 @@ router.get(
   urlController.getAnalytics
 );
 
-
 // Redirect
 router.get(
   '/:code',
   redirectLimiter,
   urlController.redirectToOriginal
 );
-
 
 module.exports = router;
