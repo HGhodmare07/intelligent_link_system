@@ -1,32 +1,51 @@
 const ALPHABET =
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-const BASE = ALPHABET.length; // 62
+const BASE = 62n;
 
+/**
+ * Encode a non-negative BigInt into Base62.
+ *
+ * Examples:
+ * 0n  -> "0"
+ * 61n -> "z"
+ * 62n -> "10"
+ */
 function encode(num) {
-  if (typeof num !== 'number' || num < 0 || !Number.isFinite(num)) {
-    throw new Error('encode() expects a non-negative finite number');
+  if (typeof num !== 'bigint' || num < 0n) {
+    throw new Error(
+      'encode() expects a non-negative BigInt (e.g., 123n)'
+    );
   }
 
-  if (num === 0) return ALPHABET[0];
+  if (num === 0n) {
+    return ALPHABET[0];
+  }
 
   let result = '';
   let n = num;
 
-  while (n > 0) {
-    result = ALPHABET[n % BASE] + result;
-    n = Math.floor(n / BASE);
+  while (n > 0n) {
+    const remainder = Number(n % BASE);
+    result = ALPHABET[remainder] + result;
+    n = n / BASE;
   }
 
   return result;
 }
 
+/**
+ * Decode a Base62 string into BigInt.
+ *
+ * Example:
+ * "10" -> 62n
+ */
 function decode(str) {
   if (typeof str !== 'string' || str.length === 0) {
     throw new Error('decode() expects a non-empty string');
   }
 
-  let result = 0;
+  let result = 0n;
 
   for (const char of str) {
     const value = ALPHABET.indexOf(char);
@@ -35,7 +54,7 @@ function decode(str) {
       throw new Error(`Invalid Base62 character: "${char}"`);
     }
 
-    result = result * BASE + value;
+    result = result * BASE + BigInt(value);
   }
 
   return result;

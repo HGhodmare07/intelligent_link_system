@@ -2,3 +2,18 @@ node_modules/
 .env
 .env.local
 .env.*.local
+
+# Python
+ml-service/venv/
+ml-service/.venv/
+__pycache__/
+*.pyc
+
+# ML model files
+ml-service/model/*.joblib
+
+# Python generated data
+ml-service/data/
+
+# Frontend build output
+frontend/dist/

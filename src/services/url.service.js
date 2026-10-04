@@ -1,3 +1,4 @@
+
 const base62 = require('./base62.service');
 const urlModel = require('../models/url.model');
 const cacheService = require('./cache.service');
@@ -7,7 +8,8 @@ const UAParser = require('ua-parser-js');
 async function shortenUrl(originalUrl) {
   const { id } = await urlModel.insertUrl(originalUrl);
 
-  const shortCode = base62.encode(Number(id));
+  // PostgreSQL BIGINT -> JavaScript BigInt
+  const shortCode = base62.encode(BigInt(id));
 
   const updated = await urlModel.setShortCode(id, shortCode);
 
@@ -42,9 +44,9 @@ async function resolveShortCode(shortCode, requestInfo = {}) {
 
   // Check Redis
   const cachedUrl = await cacheService.getUrl(shortCode);
-   
+
   console.log('Detected device:', device);
-  
+
   let row;
 
   if (cachedUrl) {
@@ -161,3 +163,4 @@ module.exports = {
   resolveShortCode,
   getShortUrl
 };
+ 

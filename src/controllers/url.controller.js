@@ -1,3 +1,4 @@
+
 const qrService = require('../services/qr.service');
 const urlService = require('../services/url.service');
 const analyticsService = require('../services/analytics.service');
@@ -49,7 +50,9 @@ async function createShortUrl(req, res, next) {
       security: {
         decision: securityResult.decision,
         p_malicious: securityResult.p_malicious,
-        most_likely_class: securityResult.most_likely_class
+        p_benign: securityResult.p_benign,
+        most_likely_class: securityResult.most_likely_class,
+        reputation: securityResult.reputation
       }
     });
   } catch (err) {
@@ -132,3 +135,4 @@ module.exports = {
   generateQr,
   getAnalytics
 };
+

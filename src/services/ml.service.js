@@ -1,3 +1,4 @@
+
 const ML_SERVICE_URL =
   process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
 
@@ -23,9 +24,15 @@ async function checkUrl(url) {
     throw error;
   }
 
+  console.log(
+    'ML RESPONSE:',
+    JSON.stringify(data, null, 2)
+  );
+
   return data;
 }
 
 module.exports = {
   checkUrl
 };
+

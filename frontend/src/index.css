@@ -1,0 +1,1183 @@
+/* ==================================================
+   INTELLIGENT LINK RESOLUTION & TRAFFIC ANALYTICS
+   Professional Navy Blue Theme
+================================================== */
+
+/* --------------------------------------------------
+   1. COLOR VARIABLES
+-------------------------------------------------- */
+
+:root {
+  --bg: #F1F5F9;
+  --surface: #FFFFFF;
+  --ink: #1E293B;
+  --muted: #64748B;
+  --line: #E2E8F0;
+
+  --side: #172A45;
+  --side-ink: #CBD5E1;
+
+  --accent: #3B82F6;
+  --accent-dark: #2563EB;
+  --accent-light: #DBEAFE;
+  --chart-secondary: #93C5FD;
+
+  --ok: #16A34A;
+  --ok-bg: #DCFCE7;
+
+  --danger: #DC2626;
+  --danger-bg: #FEE2E2;
+
+  --warn: #B7791F;
+  --warn-bg: #FEF3C7;
+
+  --radius: 12px;
+
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system,
+    BlinkMacSystemFont, Roboto, Arial, sans-serif;
+  color: var(--ink);
+}
+
+/* --------------------------------------------------
+   2. GLOBAL STYLES
+-------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+h1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 650;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 650;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+p {
+  margin: 0 0 12px;
+}
+
+a {
+  color: var(--accent-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1D4ED8;
+}
+
+code {
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 0.88em;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------
+   3. MAIN APPLICATION LAYOUT
+-------------------------------------------------- */
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.content {
+  flex: 1;
+  max-width: 1440px;
+  width: 100%;
+  padding: 30px 32px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+/* --------------------------------------------------
+   4. SIDEBAR
+-------------------------------------------------- */
+
+.sidebar {
+  width: 245px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    180deg,
+    #172A45 0%,
+    #1E3A5F 100%
+  );
+  color: var(--side-ink);
+  padding: 22px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}
+
+.brand {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  padding: 0 8px 26px;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    #3B82F6,
+    #60A5FA
+  );
+  color: #FFFFFF;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.brand-name {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.96rem;
+  letter-spacing: 0.1px;
+}
+
+.brand-sub {
+  color: #94A3B8;
+  font-size: 0.76rem;
+  margin-top: 2px;
+}
+
+/* Sidebar navigation */
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  color: var(--side-ink);
+  text-decoration: none;
+  margin-bottom: 5px;
+  font-size: 0.91rem;
+  font-weight: 500;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+.nav-link.active {
+  background: rgba(59, 130, 246, 0.18);
+  color: #BFDBFE;
+  border-left-color: #60A5FA;
+  font-weight: 650;
+}
+
+/* --------------------------------------------------
+   5. NAVBAR
+-------------------------------------------------- */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  flex-shrink: 0;
+  padding: 0 30px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.025);
+}
+
+.navbar-title {
+  font-weight: 650;
+  font-size: 0.96rem;
+  color: var(--ink);
+}
+
+.menu-btn {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 7px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.menu-btn:hover {
+  background: #EFF6FF;
+}
+
+.menu-btn span {
+  display: block;
+  width: 21px;
+  height: 2px;
+  background: var(--ink);
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------
+   6. PAGE HEADER
+-------------------------------------------------- */
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 2px;
+}
+
+.page-head h1 {
+  margin: 0 0 7px;
+  font-size: 1.75rem;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+}
+
+.page-head .muted {
+  margin: 0;
+  max-width: 70ch;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------
+   7. CARDS AND GRIDS
+-------------------------------------------------- */
+
+.card {
+  min-width: 0;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 3px 12px rgba(30, 58, 95, 0.04);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 22px rgba(30, 58, 95, 0.075);
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* --------------------------------------------------
+   8. ANALYTICS METRIC CARDS
+-------------------------------------------------- */
+
+.grid-4 > * {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 14px rgba(30, 58, 95, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Accent strip on top of metric cards */
+.grid-4 > *::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+}
+
+.grid-4 > *:hover {
+  transform: translateY(-3px);
+  border-color: #BFDBFE;
+  box-shadow: 0 9px 24px rgba(30, 58, 95, 0.09);
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 550;
+}
+
+.stat-value {
+  color: var(--ink);
+  font-size: 2rem;
+  font-weight: 750;
+  line-height: 1.25;
+  margin-top: 7px;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+.stat-ok .stat-value {
+  color: var(--ok);
+}
+
+.stat-danger .stat-value {
+  color: var(--danger);
+}
+
+/* --------------------------------------------------
+   9. FORMS
+-------------------------------------------------- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+label {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.92rem;
+  background: #FFFFFF;
+  color: var(--ink);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94A3B8;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+}
+
+.form-actions,
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.row input {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* --------------------------------------------------
+   10. BUTTONS
+-------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 17px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+  box-shadow: 0 3px 9px rgba(59, 130, 246, 0.16);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 13px rgba(59, 130, 246, 0.22);
+}
+
+.btn-ghost {
+  background: #FFFFFF;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: #EFF6FF;
+  border-color: #BFDBFE;
+}
+
+/* --------------------------------------------------
+   11. ALERTS AND FEEDBACK
+-------------------------------------------------- */
+
+.alert {
+  padding: 13px 15px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 0.9rem;
+}
+
+.alert-danger {
+  background: var(--danger-bg);
+  border-color: #FCA5A5;
+  color: #991B1B;
+}
+
+.alert-warn {
+  background: var(--warn-bg);
+  border-color: #FCD34D;
+  color: #92400E;
+}
+
+.alert-ok {
+  background: var(--ok-bg);
+  border-color: #86EFAC;
+  color: #166534;
+}
+
+/* --------------------------------------------------
+   12. LOADING
+-------------------------------------------------- */
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --------------------------------------------------
+   13. SECURITY STATUS
+-------------------------------------------------- */
+
+.security {
+  border-left: 5px solid var(--ok);
+  background: #F0FDF4;
+}
+
+.security-blocked {
+  border-left-color: var(--danger);
+  background: #FFF7F7;
+}
+
+.security-headline {
+  color: #B91C1C;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.facts dd {
+  margin: 3px 0 0;
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #E2E8F0;
+  color: #475569;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-ok {
+  background: var(--ok-bg);
+  color: #166534;
+}
+
+.badge-danger {
+  background: var(--danger-bg);
+  color: #991B1B;
+}
+
+.short-url {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: var(--accent-dark);
+  word-break: break-all;
+}
+
+.qr {
+  display: block;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+  margin-top: 14px;
+  image-rendering: pixelated;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  background: #FFFFFF;
+}
+
+/* --------------------------------------------------
+   14. TABLES
+-------------------------------------------------- */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 9px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.77rem;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  background: #F8FAFC;
+  white-space: nowrap;
+}
+
+td {
+  color: #475569;
+}
+
+tbody tr {
+  transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+  background: #F8FAFC;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cell-url {
+  word-break: break-all;
+  max-width: 420px;
+}
+
+/* Dashboard Recent URLs panel */
+.content > .card h3 {
+  margin: 0 0 17px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.content > .card .table-wrap {
+  border: 1px solid #E8EDF3;
+  border-radius: 9px;
+}
+
+.content > .card table {
+  min-width: 650px;
+}
+
+.content > .card th {
+  padding: 14px;
+}
+
+.content > .card td {
+  padding: 15px 14px;
+  font-size: 0.84rem;
+}
+
+.content > .card td a {
+  color: var(--accent-dark);
+  font-weight: 650;
+}
+
+.content > .card td a:hover {
+  text-decoration: underline;
+}
+
+.content > .card td code {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border-radius: 5px;
+}
+
+/* --------------------------------------------------
+   15. HORIZONTAL BAR CHARTS
+-------------------------------------------------- */
+
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.bars li {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) 40px;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.88rem;
+}
+
+.bar-label {
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-track {
+  height: 10px;
+  overflow: hidden;
+  background: #E2E8F0;
+  border-radius: 10px;
+}
+
+.bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #60A5FA,
+    #2563EB
+  );
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.bar-value {
+  text-align: right;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------
+   16. VERTICAL COLUMNS
+-------------------------------------------------- */
+
+.columns {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  height: 220px;
+  padding: 12px 4px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.col-bar-wrapper {
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.col-bar {
+  width: 70%;
+  background: linear-gradient(
+    180deg,
+    #60A5FA,
+    #2563EB
+  );
+  border-radius: 5px 5px 0 0;
+}
+
+.col-label {
+  height: 28px;
+  padding-top: 6px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------
+   17. ANALYTICS CHARTS
+-------------------------------------------------- */
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  min-width: 0;
+}
+
+.analytics-chart-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 3px 12px rgba(30, 58, 95, 0.04);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.analytics-chart-card:hover {
+  box-shadow: 0 8px 22px rgba(30, 58, 95, 0.08);
+}
+
+.analytics-chart-card h3 {
+  margin: 0 0 17px;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+/* Browser, OS, Device and Referrer breakdowns */
+
+.analytics-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.breakdown-item {
+  width: 100%;
+  min-width: 0;
+}
+
+.breakdown-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+
+.breakdown-label {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 550;
+  overflow-wrap: anywhere;
+}
+
+.breakdown-count {
+  flex-shrink: 0;
+  color: var(--accent-dark);
+  font-size: 0.9rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.breakdown-track {
+  width: 100%;
+  height: 9px;
+  background: #E2E8F0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.breakdown-fill {
+  height: 100%;
+  min-width: 3px;
+  background: linear-gradient(
+    90deg,
+    #60A5FA,
+    #2563EB
+  );
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.breakdown-percentage {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* Plotly chart container */
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.chart-container .js-plotly-plot,
+.chart-container .plot-container,
+.chart-container .svg-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Analytics tables */
+
+.analytics-table-card {
+  width: 100%;
+  min-width: 0;
+  padding: 22px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 3px 12px rgba(30, 58, 95, 0.04);
+}
+
+.analytics-table-card h3 {
+  margin: 0 0 16px;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.analytics-table-card .table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.analytics-table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.analytics-table-card th,
+.analytics-table-card td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.analytics-table-card th {
+  background: #F8FAFC;
+  color: var(--muted);
+  font-size: 0.77rem;
+  font-weight: 700;
+}
+
+.analytics-table-card tbody tr:hover {
+  background: #F8FAFC;
+}
+
+.analytics-table-card .cell-url {
+  max-width: 250px;
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------
+   18. RESPONSIVE DESIGN
+-------------------------------------------------- */
+
+/* Smaller desktops and tablets */
+
+@media (max-width: 1100px) {
+  .content {
+    padding: 24px;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tablets and phones */
+
+@media (max-width: 700px) {
+  .navbar {
+    height: 58px;
+    padding: 0 16px;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .content {
+    padding: 20px 16px;
+    gap: 17px;
+  }
+
+  .page-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .page-head h1 {
+    font-size: 1.5rem;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .analytics-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .analytics-grid {
+    gap: 15px;
+  }
+
+  .card,
+  .analytics-chart-card,
+  .analytics-table-card {
+    padding: 17px;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bars li {
+    grid-template-columns: 85px minmax(0, 1fr) 35px;
+    gap: 7px;
+  }
+
+  .analytics-table-card th,
+  .analytics-table-card td {
+    padding: 9px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Narrow phones */
+
+@media (max-width: 400px) {
+  .content {
+    padding: 15px 11px;
+    gap: 14px;
+  }
+
+  .navbar {
+    padding: 0 12px;
+  }
+
+  .card,
+  .analytics-chart-card,
+  .analytics-table-card {
+    padding: 13px;
+  }
+
+  .analytics-grid {
+    gap: 12px;
+  }
+
+  .analytics-chart-card h3 {
+    margin-bottom: 12px;
+  }
+
+  .breakdown-heading {
+    gap: 7px;
+  }
+
+  .breakdown-label {
+    font-size: 0.84rem;
+  }
+
+  .breakdown-count {
+    font-size: 0.84rem;
+  }
+
+  .bars li {
+    grid-template-columns: 72px minmax(0, 1fr) 32px;
+    font-size: 0.8rem;
+  }
+}
+
+/* --------------------------------------------------
+   19. ACCESSIBILITY
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
